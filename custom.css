@@ -1,0 +1,15 @@
+.navbar {
+    background: #3D5A80
+}
+
+.user {
+    background: #3D5A80;
+    padding: 10px;
+    height: 20px;
+    width: 15px;
+}
+
+.users {
+    padding: 10px;
+    position:relative;
+}
