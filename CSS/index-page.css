@@ -1,0 +1,47 @@
+.navbar {
+    background: #f2f2f2;
+    top: 0;
+    width: 100%;
+    height: 80px;
+    text-align: center;
+    position: relative;
+}
+
+.brand {
+    position: absolute;
+    left: 50%;
+    margin-left: -125px !important; /*to account for logo pic*/
+    display: block;
+}
+
+.logo-pic {
+    width: 250px;
+    height: 60px;
+}
+
+.profile-info {
+    position: absolute;
+    right: 1%;
+    margin-right: 10px;
+    display: block;
+}
+
+.prof-pic {
+    width: 50px;
+    height: 50px;
+}
+.footer {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: 60px;
+    line-height: 60px;
+    background: #f2f2f2;
+    text-align: center;
+}
+
+.footer-link {
+    color: #ef969f;
+    font-size: large;
+}
