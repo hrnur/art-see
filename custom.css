@@ -1,5 +1,22 @@
 .navbar {
-    background: #3D5A80
+    background: #f2f2f2;
+    top: 0;
+    width: 100%;
+    height: 80px;
+    text-align: center;
+    position: relative;
+}
+
+.brand {
+    position: absolute;
+    left: 50%;
+    margin-left: -125px !important; /*to account for logo pic*/
+    display: block;
+}
+
+.logo-pic {
+    width: 250px;
+    height: 60px;
 }
 
 .user {
@@ -12,4 +29,22 @@
 .users {
     padding: 10px;
     position:relative;
+}
+
+.party {
+    position: absolute;
+    border: 1px; 
+    left: 50px;
+    width: 200px;
+    height: fit-content;
+    border: 3px solid black;
+}
+
+.chat {
+    position: absolute;
+    right: 100px;
+    width: 200px;
+    height: 350px;
+    border: 3px solid black;
+    overflow-y: auto;
 }
