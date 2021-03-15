@@ -10,7 +10,8 @@
 .brand {
     position: absolute;
     left: 50%;
-    margin-left: -125px !important; /*to account for logo pic*/
+    margin-left: -125px !important;
+    /*to account for logo pic*/
     display: block;
 }
 
@@ -31,9 +32,8 @@
     height: 50px;
 }
 
-.edit-prof-pic {
-    width: 150px;
-    height: 150px;
+body {
+    background: #f2f2f2;
 }
 
 .user-stats {
@@ -43,9 +43,23 @@
 }
 
 .user-info {
-    align-content: center;
-    text-align: center;
     margin-top: 20px;
+}
+
+.edit-prof-pic {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 25%;
+}
+
+.name-field {
+    text-align: center;
+    color: #ef969f;
+}
+
+.info-fields {
+    align-self: center;
 }
 
 .footer {
@@ -62,4 +76,14 @@
 .footer-link {
     color: #ef969f;
     font-size: large;
+}
+
+.party-card {
+    height: 370px;
+    margin: 30px auto;
+}
+
+.scrollable {
+    overflow-y: auto;
+    max-height: 300px;
 }
