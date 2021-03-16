@@ -17,15 +17,9 @@
 
 <body>
     <!--NAVBAR-->
-    <div class="navbar">
-        <a class="brand" href="#">
-            <img class="logo-pic" src="images/logo.png" alt="art, see!">
-        </a>
-        <div class="profile-info">
-            <img class="prof-pic" src="images/profile.jpeg" alt="Profile Photo">
-            <a class="prof-link text-secondary" href="#">Patrick Star</a>
-        </div>
-    </div>
+    <?php 
+    include('navbar.html');
+    ?>
 
     <main>
 
@@ -174,7 +168,7 @@
             </div>
             <br>
             <div class="start">
-                <a class="start-game btn btn-primary btn-lg" href="drawing_page.html">Start Game!</a>
+                <a class="start-game btn btn-primary btn-lg" href="drawing_page.php">Start Game!</a>
             </div>
         </div>
     </main>
@@ -187,10 +181,10 @@
         integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns" crossorigin="anonymous">
     </script>
 
-    <!--FOOTER-->
-    <div class="footer">
-        <p>Copyright &copy; 2021 Hana Nur, Monica Sandoval-Vasquez <a class="footer-link" href="#">art, see!</a></p>
-    </div>
+    <?php 
+    include('footer.html');
+    ?>
+
 </body>
 
 </html>
