@@ -153,16 +153,9 @@
 
 <body onload="init()">
     <header>
-        <div class="navbar">
-            <a class="brand" href="#">
-                <img class="logo-pic" src="images/logo.png" alt="art, see!">
-            </a>
-            <div class="profile-info">
-            <img class="prof-pic" src="images/profile.jpeg" alt="Profile Photo"> 
-            <a class="prof-link text-secondary" href="#">Username</a>
-        </div>
-        </div>
-
+        <?php
+        include('navbar.html');
+        ?>
     </header>
 
     <div class="container">
@@ -228,12 +221,12 @@
         <div class="messages .col-md-3" style="background-color: grey;"> -->
 
         </div>
-
         
-
-    <div class="footer">
-        <p>Copyright &copy; 2021 Hana Nur, Monica Sandoval-Vasquez <a class="footer-link" href="#">art, see!</a></p>
-    </div>
+        
+        
+        <?php 
+        include('footer.html');
+        ?>
 
 </body>
 
