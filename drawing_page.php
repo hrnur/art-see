@@ -1,3 +1,8 @@
+<?php
+require('connect-db.php');
+
+?>
+
 <html>
     <head>
         <!--PROGRAMMER:Hana & Monica & Google-->
@@ -136,7 +141,6 @@
         }
     }
 </script>
-
 <head>
     <meta charset="utf-8">
 
@@ -170,20 +174,31 @@
                 </p>
             </div>
             <hr>
-            10/10
-            <ul>
-                <li>Player 1</li> <!--TODO: iterate through list of party members-->
-                <li>Player 2</li>
-                <li>Player 3</li>
-                <li>Player 4</li>
-                <li>Player 5</li>
-                <li>Player 6</li>
-                <li>Player 7</li>
-                <li>Player 8</li>
-                <li>Player 9</li>
-                <li>Player 10</li>
-            </ul>
-            
+            3/10
+
+            <ul style="list-style-type:none;padding-left:0;">
+            <?php
+
+            $colors = array("red","orange","yellow","green","blue","purple","pink","aquamarine","chartreuse","fuchsia");
+
+            global $db;
+
+            $query = "SELECT username from user WHERE userPartyID=1"; //TODO: get userPartyID from group page session
+
+            $statement = $db->prepare($query);
+            $statement->execute();
+
+            $results = $statement->fetchAll();
+
+            $statement->closeCursor();
+
+            $i = 0;
+
+            foreach ($results as $result){
+                echo "<li style=\"background:$colors[$i];padding-left:0;\">" . $result['username'] . "</li><br/>";
+                $i++;      
+            }
+            ?>            
         </div>
 
         <div class="canvas .col-md-6">
