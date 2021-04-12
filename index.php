@@ -1,6 +1,5 @@
 <?php
 require("connect-db.php");
-require("auth_sql.php");
 
 if (isset($_POST['action'])){
   if (!empty($_POST['action']) && ($_POST['action'] == 'Sign Up')){
@@ -19,8 +18,11 @@ if (isset($_POST['login'])){
     $stmt->bindParam(2, $password, PDO::PARAM_STR);
     $stmt->execute();
     $info = $stmt->fetch(PDO::FETCH_ASSOC);
+    $usern = $info['username'];
+    echo $query;
   
   if ($info){
+    $_SESSION['uname'] = 'dre';
     header('Location: groups_page.php');
   }
 }
