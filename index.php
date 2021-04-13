@@ -1,9 +1,12 @@
 <?php
 require("connect-db.php");
+include("auth_sql.php");
 
 if (isset($_POST['action'])){
   if (!empty($_POST['action']) && ($_POST['action'] == 'Sign Up')){
       $error = userSignUp($_POST['username'],$_POST['firstName'] . " " . $_POST['lastName'],$_POST['email'],$_POST['pwd']);
+
+      echo $error;
   }
 }
 
@@ -17,17 +20,18 @@ if (isset($_POST['login'])){
     $stmt->bindParam(1, $em, PDO::PARAM_STR);
     $stmt->bindParam(2, $password, PDO::PARAM_STR);
     $stmt->execute();
-    $info = $stmt->fetch(PDO::FETCH_ASSOC);
+    $info = $stmt->fetchAll();
     $usern = $info['username'];
     echo $query;
   
   if ($info){
-    $_SESSION['uname'] = 'dre';
+    $_SESSION['uname'] = $usern;
     header('Location: groups_page.php');
   }
 }
   else {
     $error = "Invalid username or password"; //TODO: display error
+    echo $error;
   }
 }
 ?>
@@ -37,7 +41,7 @@ if (isset($_POST['login'])){
 <html lang="en">
 
 <head>
-  <!--PROGRAMMER:Hana & Monica & Google-->
+  <!--PROGRAMMER:Hana & Monica-->
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge"> <!-- required to handle IE -->
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -134,7 +138,7 @@ if (isset($_POST['login'])){
             </button>
           </div>
           <div class="modal-body">
-            <form method="POST" action="">
+            <form method="POST" action="" >
               <h1>Sign Up</h1>
               <div class="form-group">
                 <input type="text" class="form-control" name="firstName" id="firstName" placeholder="First name" required>
@@ -151,7 +155,6 @@ if (isset($_POST['login'])){
               <div class="form-group">
                 <input name="pwd" type="password" class="form-control" id="exampleInputPassword1" placeholder="Password" required>
               </div>
-
               <button type="submit" class="btn btn-info" value="Sign Up" name="action" id="action">Submit</button>
             </form>
           </div>
