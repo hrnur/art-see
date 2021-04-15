@@ -19,7 +19,12 @@
 <body>
     <!--NAVBAR-->
     <?php 
-    include('navbar.html');
+    session_start();
+    if (!isset($_SESSION['uname'])) {
+       header("Location: index.php"); 
+    }
+    include('navbar.php');
+    include('groups_query.php');
     ?>
 
     <main>
@@ -31,6 +36,9 @@
                         <h4 class="card-title text-center"> Step One: Choose a Category!</h4>
                         <div class="card-body">
                             <div class="row">
+                                <!--
+                                TODO: Use Angular to sort and filter category model instances
+
                                 <div class="col-md-6 dropdown justify-content-center">
                                     <button class="btn btn-outline-secondary dropdown-toggle" type="button"
                                         id="sortDropdown" data-toggle="dropdown" aria-haspopup="true"
@@ -54,34 +62,18 @@
                                         <a class="dropdown-item" href="#">Hard</a>
                                     </div>
                                 </div>
+                            -->
                             </div>
                             <hr>
                             <form>
                                 <div class="list-group">
+                                <?php foreach ($categories as $category)  : ?>
                                     <div class="form-check list-group-item">
-                                        <input class="form-check-input" type="radio" name="category" value="Action" id="radio1">
-                                        <label class="form-check-label" for="radio1">Action
+                                        <input class="form-check-input" type="radio" name="category" value="<?php echo $category['categoryName']?>" id="<?php echo $category['categoryName']?>">
+                                        <label class="form-check-label" for="radio1"><?php echo $category['categoryName']?>
                                         </label>
-                                        <span class="float-right badge badge-pill badge-danger">Hard</span>
                                     </div>
-                                    <div class="form-check list-group-item">
-                                        <input class="form-check-input" type="radio" name="category" value="Action" id="radio2">
-                                        <label class="form-check-label" for="radio2">Animals
-                                        </label>
-                                        <span class="float-right badge badge-pill badge-success">Easy</span>
-                                    </div>
-                                    <div class="form-check list-group-item">
-                                        <input class="form-check-input" type="radio" name="category" value="Action" id="radio3">
-                                        <label class="form-check-label" for="radio3">Books
-                                        </label>
-                                        <span class="float-right badge badge-pill badge-danger">Hard</span>
-                                    </div>
-                                    <div class="form-check list-group-item">
-                                        <input class="form-check-input" type="radio" name="category" value="Action" id="radio4">
-                                        <label class="form-check-label" for="radio4">Movies
-                                        </label>
-                                        <span class="float-right badge badge-pill badge-warning">Medium</span>
-                                    </div>
+                                <?php endforeach; ?>
                                 </div>
                             </form>
                         </div>
@@ -93,83 +85,55 @@
                         <div class="card-body align-self-center">
                             <select class="custom-select" id="select-party" aria-labelledby="dropdownMenuButton">
                                 <option selected>Select Party</option>
-                                <option value="SuperGuessers">SuperGuessers</option>
-                                <option value="BikiniBottomSquad">BikiniBottomSquad</option>
-                                <option value="WeRock">WeRock</option>
+                                <?php foreach ($user_parties as $party)  : ?>
+                                <option value="<?php echo $party['partyID'] ?>"><?php echo $party['partyName'] ?></option>
+                                <?php endforeach; ?>
                             </select>
                             <br>
                             <hr>
                             <br>
                             <h5>Create a New Party</h5>
-                            <div class="input-group">
-                                <div class="input-group-prepend">
-                                    <span class="input-group-text">Party Name</span>
+                            <form action="groups_page.php" method="get">
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text">Party Name</span>
+                                    </div>
+                                    <input type="text" name="newPartyName" class="form-control" id="party-name" placeholder="Enter Party Name" required>
+                                    <div class="input-group-append">
+                                        <input type="submit" name="create-btn" class="btn btn-info btn-md" id="create-party-btn" value="Create Party"/>
+                                    </div>
                                 </div>
-                                <input type="text" class="form-control" id="party-name" placeholder="Enter Party Name"
-                                    required>
-                                <div class="input-group-append">
-                                    <button class="create-party-btn btn btn-primary" id="create-party-btn"
-                                        onclick="createParty()">Create Party</button>
-                                </div>
-                            </div>
+                            </form>
+                            <div class="error-msg">
+                                        <small id="createPartyInvalid" class="text-danger"><?php if (isset($msg)) echo $msg;?></small>
+                                    </div>
                             <br>
                             <div class="new-code d-inline-block">
                                 <p class="d-inline">Party Code:</p>
-                                <p class="d-inline" id="new-party-code"></p>
+                                <p class="d-inline" id="new-party-code"><?php if (isset($code)) echo $code ;?></p>
                             </div>
                             <br>
                             <hr>
                             <br>
                             <h5>Join a Party</h5>
-                            <div class="input-group">
-                                <div class="input-group-prepend">
-                                    <span class="input-group-text">Party Code</span>
+                            <form action="groups_page.php" method="get">
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text">Party Code</span>
+                                    </div>
+                                    <input type="text" name="join-code" class="form-control" id="party-code" placeholder="Enter Party Code" aria-required="true" required>
+                                    <div class="input-group-append">
+                                        <input type="submit" name="join-btn" class="btn btn-info" id="join-party-btn" value="Join Party"/>
+                                    </div>
                                 </div>
-                                <input type="text" class="form-control" id="party-code" placeholder="Enter Party Code"
-                                    required>
-                                <div class="input-group-append">
-                                    <button class="join-party-btn btn btn-primary" id="join-party-btn"
-                                        onclick="joinParty()">Join Party</button>
-                                </div>
-                            </div>
+                            </form>
                         </div>
-                        <script>
-                            function createParty() {
-                                var parties_list = document.getElementById('select-party');
-                                var item = document.getElementById('party-name').value;
-                                var op = document.createElement("option");
-                                op.setAttribute('value', item);
-                                op.appendChild(document.createTextNode(item));
-                                parties_list.appendChild(op);
-                                document.getElementById("new-party-code").innerHTML = makeid(6);
-                            }
-
-                            function joinParty() {
-                                if (confirm('Are you sure you want to join party ?')) {
-                                    var parties_list = document.getElementById('select-party');
-                                    var op = document.createElement("option");
-                                    op.appendChild(document.createTextNode("New Party"));
-                                    parties_list.appendChild(op);
-                                } else
-                                    e.preventDefault();
-                            }
-
-                            function makeid(length) {
-                                var result = '';
-                                var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-                                var charactersLength = characters.length;
-                                for (var i = 0; i < length; i++) {
-                                    result += characters.charAt(Math.floor(Math.random() * charactersLength));
-                                }
-                                return result;
-                            }
-                        </script>
                     </div>
                 </div>
             </div>
             <br>
             <div class="start">
-                <a class="start-game btn btn-primary btn-lg" href="drawing_page.php">Start Game!</a>
+                <a class="start-game btn btn-info btn-lg" href="drawing_page.php">Start Game!</a>
             </div>
         </div>
     </main>

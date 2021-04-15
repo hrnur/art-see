@@ -19,7 +19,12 @@
 <body>
     <!--NAVBAR-->
     <?php 
-    include('navbar.html');
+    session_start();
+    include('navbar.php');
+    include('user_profile_query.php');
+    if (!isset($_SESSION['uname'])) {
+        header("Location: index.php"); 
+    }
     ?>
 
     <main>
@@ -29,8 +34,8 @@
                 <div class="col-md-3 col-xs-4">
                     <div class=" user-stats">
                         <h3 style="color: #ef969f">Player Stats</h3>
-                        <p style="text-align: left; margin-left: 12.5%;">High Score: 200</p>
-                        <p style="text-align: left; margin-left: 12.5%;">Games Played: 47</p>
+                        <p style="text-align: left; margin-left: 12.5%;">High Score: <?php if (isset($user_info['highScore'])) echo $user_info['highScore']; else echo "Unknown" ?></p>
+                        <p style="text-align: left; margin-left: 12.5%;">Games Played:  <?php if (isset($user_info['gamesPlayed'])) echo $user_info['gamesPlayed']; else echo "Unknown" ?></p>
                     </div>
                 </div>
 
@@ -42,24 +47,28 @@
                                 <img class="edit-prof-pic" src="images/profile.jpeg" alt="Profile Photo">
                             </div>
                             <div class="row name-field">
-                                <h3 class="col name" id="name">Patrick Star</h3>
+                                <h3 class="col name" id="name">Hello, <?php if (isset($user_info['name'])) echo $user_info['name']; else echo "Unknown" ?></h3>
                                 <p id="demo"></p>
                             </div>
                             <div class="info-fields">
+                                <div class="row fullname-field">
+                                    <p class="col-md-4">Name:</p>
+                                    <p id="name" class="name text-secondary col-md-8"> <?php if (isset($user_info['name'])) echo $user_info['name']; else echo "Unknown" ?></p>
+                                </div>
                                 <div class="row username-field">
                                     <p class="col-md-4">Username:</p>
-                                    <p id="username" class="username text-secondary col-md-8">pStar5</p>
+                                    <p id="username" class="username text-secondary col-md-8"> <?php if (isset($username)) echo $username; else echo "Unknown" ?></p>
                                 </div>
                                 <div class="row email-field">
                                     <p class="col-md-4">Email:</p>
-                                    <p id="email" class="email text-secondary col-md-8" type="Email">pStar5@gmail.com
+                                    <p id="email" class="email text-secondary col-md-8" type="Email"> <?php if (isset($user_info['email'])) echo $user_info['email']; else echo "Unknown" ?>
                                     </p>
                                 </div>
                             </div>
 
                             <!--USER PROFILE FORM-->
                             <!-- Button trigger modal -->
-                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#update-modal">
+                            <button type="button" class="btn btn-info" data-toggle="modal" data-target="#update-modal">
                                 Edit Profile
                             </button>
                         </div>
@@ -77,41 +86,26 @@
                                     </button>
                                 </div>
                                 <div class="modal-body">
-                                    <form onsubmit="" id="needs-validation">
+                                    <form action="user_profile_page.php">
                                         <br>
                                         <div class="form-group input-group">
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text">Name</span>
                                             </div>
-                                            <input type="text" class="form-control" id="updated-name"
+                                            <input type="text" class="form-control" id="name" name="name"
                                                 placeholder="Enter Name" required>
-                                            <p class="text-danger" id="invalid-name">
-                                            </p>
-                                        </div>
-                                        <div class="form-group input-group">
-                                            <div class="input-group-prepend">
-                                                <span class="input-group-text">Username</span>
-                                            </div>
-                                            <input type="text" class="form-control" id="updated-username"
-                                                placeholder="Enter Username" required>
-                                            <p class="text-danger" id="invalid-user">
-                                            </p>
                                         </div>
                                         <div class="form-group input-group">
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text">@</span>
                                             </div>
-                                            <input type="email" class="form-control" id="updated-email"
+                                            <input type="email" class="form-control" id="email" name="email"
                                                 aria-describedby="emailHelp" placeholder="Enter Email" required>
-                                            <p class="text-danger" id="invalid-email">
-                                            </p>
                                         </div>
                                         <div class="modal-footer">
                                             <button type="button" class="btn btn-secondary"
                                                 data-dismiss="modal">Close</button>
-                                            <button onclick="updateProfile()" type="button" class="btn btn-primary"
-                                                id="update-button">Save
-                                                changes</button>
+                                            <input type="submit" class="btn btn-info" value="Save changes" name="update-btn" id="update-button"/>
                                         </div>
                                     </form>
                                 </div>
@@ -126,19 +120,44 @@
                             <h4 class="text-center" style="color: #ef969f">Parties</h4>
                             <ul class="parties list-group-flush" id="parties"
                                 style="width: 75%; align-content: center;">
-                                <li id="1" class="list-group-item">SuperGuessers
-                                    <button class="party-btn btn btn-danger float-right" id="party-btn"
-                                        onclick="removeParty('1')">Remove</button>
-                                </li>
-                                <li id="2" class="list-group-item">BikiniBottomSquad
-                                    <button class="party-btn btn btn-danger float-right" id="party-btn"
-                                        onclick="removeParty('2')">Remove</button>
-                                </li>
-                                <li id="3" class="list-group-item">WeRock
-                                    <button class="party-btn btn btn-danger float-right" id="party-btn"
-                                        onclick="removeParty('3')">Remove</button>
-                                </li>
+                                <?php foreach ($user_parties as $party)  : ?>
+                                <li id="<?php echo $party['partyID'] ?>" class="list-group-item"><?php echo $party['partyName']?></li>
+                                <?php endforeach; ?>
                             </ul>
+                            <!-- Button trigger modal -->
+                            <button type="button" class="btn btn-info" data-toggle="modal" data-target="#parties-modal">
+                                Edit Parties
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Modal -->
+                    <div class="modal fade" id="parties-modal" tabindex="-1" role="dialog"
+                        aria-labelledby="parties-modal-label" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="parties-modal-label">Remove Party</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <form action="user_profile_page.php">
+                                        <?php foreach ($user_parties as $party)  : ?>
+                                        <div class="form-check">
+                                            <input required type="radio" class="form-check-input" name="remove-party" id="remove-<?php echo $party['partyID'] ?>" value="<?php echo $party['partyID'] ?>">
+                                            <label class="form-check-label" for="remove-<?php echo $party['partyID'] ?>"><?php echo $party['partyName'] ?></label>
+                                        </div>
+                                        <?php endforeach; ?>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary"
+                                                data-dismiss="modal">Close</button>
+                                            <input type="submit" name="remove-party-btn" class="btn btn-info" id="update-parties-button" value="Save changes"/>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
@@ -146,42 +165,6 @@
                         $('#update-modal').on('shown.bs.modal', function () {
                             $('#myInput').trigger('focus')
                         })
-
-                        function updateProfile() {
-                            var name = document.getElementById("updated-name").value;
-                            var user = document.getElementById("updated-username").value;
-                            var email = document.getElementById("updated-email").value;
-
-                            if (name.length != 0 && user.length != 0 && email.length != 0) {
-                                document.getElementById("name").innerHTML = name;
-                                document.getElementById("username").innerText = user;
-                                document.getElementById("email").innerText = email;
-                                $('#update-modal').modal('hide')
-                            } else {
-                                if (name.length == 0)
-                                    document.getElementById("invalid-name").innerHTML = 'Please provide a name.'
-                                else
-                                    document.getElementById("invalid-name").innerHTML = ''
-                                if (user.length == 0)
-                                    document.getElementById("invalid-user").innerHTML = 'Please provide a username.'
-                                else
-                                    document.getElementById("invalid-user").innerHTML = ''
-                                if (email.length == 0)
-                                    document.getElementById("invalid-email").innerHTML = 'Please provide an email.'
-                                else
-                                    document.getElementById("invalid-email").innerHTML = ''
-                            }
-                        }
-
-                        function removeParty(id) {
-                            if (confirm('Are you sure you want to delete this category ?')) {
-                                var parties_list = document.getElementById('parties');
-                                var item = document.getElementById(id);
-                                parties_list.removeChild(item);
-                            } else {
-                                e.preventDefault();
-                            }
-                        }
                     </script>
 
                 </div>

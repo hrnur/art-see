@@ -1,6 +1,7 @@
 <?php
 require("connect-db.php");
 include("auth_sql.php");
+session_start();
 
 if (isset($_POST['action'])){
   if (!empty($_POST['action']) && ($_POST['action'] == 'Sign Up')){
@@ -15,11 +16,12 @@ if (isset($_POST['login'])){
   $password = $_POST['password'];
 
   if ($em != "" && $password != ""){
-    $query = "SELECT * FROM user WHERE email = ? AND pwd = ?";
+    $query = "SELECT * FROM user WHERE email = ? AND pwd = ? LIMIT 1";
     $stmt = $db->prepare($query);
     $stmt->bindParam(1, $em, PDO::PARAM_STR);
     $stmt->bindParam(2, $password, PDO::PARAM_STR);
     $stmt->execute();
+    $info = $stmt->fetch();
     $info = $stmt->fetchAll();
     $usern = $info['username'];
     echo $query;
