@@ -1,8 +1,47 @@
+<?php
+require("connect-db.php");
+include("auth_sql.php");
+
+if (isset($_POST['action'])){
+  if (!empty($_POST['action']) && ($_POST['action'] == 'Sign Up')){
+      $error = userSignUp($_POST['username'],$_POST['firstName'] . " " . $_POST['lastName'],$_POST['email'],$_POST['pwd']);
+
+      echo $error;
+  }
+}
+
+if (isset($_POST['login'])){
+  $em = $_POST['em'];
+  $password = $_POST['password'];
+
+  if ($em != "" && $password != ""){
+    $query = "SELECT * FROM user WHERE email = ? AND pwd = ?";
+    $stmt = $db->prepare($query);
+    $stmt->bindParam(1, $em, PDO::PARAM_STR);
+    $stmt->bindParam(2, $password, PDO::PARAM_STR);
+    $stmt->execute();
+    $info = $stmt->fetchAll();
+    $usern = $info['username'];
+    echo $query;
+  
+  if ($info){
+    $_SESSION['uname'] = $usern;
+    header('Location: groups_page.php');
+  }
+}
+  else {
+    $error = "Invalid username or password"; //TODO: display error
+    echo $error;
+  }
+}
+?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
-  <!--PROGRAMMER:Hana & Monica & Google-->
+  <!--PROGRAMMER:Hana & Monica-->
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge"> <!-- required to handle IE -->
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -20,7 +59,7 @@
 <body>
     <!--NAVBAR-->
     <div class="navbar">
-        <a class="brand" href="index.html">
+        <a class="brand" href="index.php">
             <img class="logo-pic" src="images/logo.png" alt="art, see!">
         </a>
         <!--TODO: Will use php to include a separate navbar and footer file -->
@@ -36,16 +75,16 @@
                 <div class="container">
                     <div class="row" style="width: 100%;">
                       <div class="col">
-                        <form action="">
+                        <form method="POST" action="">
                             <h1>Login</h1>
                             <br>
                             <div class="form-group">
-                              <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email" required>
+                              <input type="email" name="em" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email" required>
                             </div>
                             <div class="form-group">
-                              <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password" required>
+                              <input type="password" name="password" class="form-control" id="exampleInputPassword1" placeholder="Password" required>
                             </div>
-                            <a type="submit" class="btn btn-info" href="groups_page.php">Submit</a>
+                            <input type="submit" value="Login" name="login" id="login" class="btn btn-info">
                           </form>
                       </div>
                     </div>
@@ -99,18 +138,24 @@
             </button>
           </div>
           <div class="modal-body">
-            <form action="">
+            <form method="POST" action="" >
               <h1>Sign Up</h1>
               <div class="form-group">
-                <input type="text" class="form-control" id="username" placeholder="Username" required>
+                <input type="text" class="form-control" name="firstName" id="firstName" placeholder="First name" required>
               </div>
               <div class="form-group">
-                <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email" required>
+                <input type="text" class="form-control" name="lastName" id="lastName" placeholder="Last name" required>
               </div>
               <div class="form-group">
-                <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password" required>
+                <input type="text" class="form-control" name="username" id="username" placeholder="Username" required>
               </div>
-              <button type="submit" class="btn btn-info">Submit</button>
+              <div class="form-group">
+                <input name="email" type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email" required>
+              </div>
+              <div class="form-group">
+                <input name="pwd" type="password" class="form-control" id="exampleInputPassword1" placeholder="Password" required>
+              </div>
+              <button type="submit" class="btn btn-info" value="Sign Up" name="action" id="action">Submit</button>
             </form>
           </div>
         </div>
@@ -130,7 +175,7 @@
 
     <!--FOOTER-->
 <div class="footer">
-    <p>Copyright &copy; 2021 Hana Nur, Monica Sandoval-Vasquez <a class="footer-link" href="index.html">art, see!</a></p>
+    <p>Copyright &copy; 2021 Hana Nur, Monica Sandoval-Vasquez <a class="footer-link" href="index.php">art, see!</a></p>
 </div>
 </body>
 
