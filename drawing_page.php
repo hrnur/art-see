@@ -1,6 +1,21 @@
+<?php
+require('connect-db.php');
+include('drawing_page_sql.php');
+
+session_start();
+
+if (isset($_POST['guess'])){
+    if ($_SESSION['word'] == $_POST['messages']){
+        echo '<script>alert("Player guessed correctly!")</script>';
+        //$_SESSION['score'] = getScore();
+    }
+}
+
+?>
+
 <html>
     <head>
-        <!--PROGRAMMER:Hana & Monica & Google-->
+        <!--PROGRAMMER:Hana & Monica-->
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge"> <!-- required to handle IE -->
         <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -136,7 +151,6 @@
         }
     }
 </script>
-
 <head>
     <meta charset="utf-8">
 
@@ -153,6 +167,7 @@
 
 </head>
 
+
 <body onload="init()">
     <header>
         <?php
@@ -164,34 +179,67 @@
 
         <div class="party">
             <div class="info">
-                <h3>Party Name</h3>
+                <h3 >Party Name</h3>
                 <p style="font-size: 12px;">Category: Animals <br/> <!---TODO: get category info from data in groups page-->
                     Round 1/3
                 </p>
             </div>
             <hr>
-            10/10
-            <ul>
-                <li>Player 1</li> <!--TODO: iterate through list of party members-->
-                <li>Player 2</li>
-                <li>Player 3</li>
-                <li>Player 4</li>
-                <li>Player 5</li>
-                <li>Player 6</li>
-                <li>Player 7</li>
-                <li>Player 8</li>
-                <li>Player 9</li>
-                <li>Player 10</li>
-            </ul>
-            
+            3/10
+
+            <ul style="list-style-type:none;padding-left:0;">
+            <?php
+
+            $colors = array("red","orange","yellow","green","blue","purple","pink","aquamarine","chartreuse","fuchsia");
+
+            global $db;
+
+            $query = "SELECT username from user WHERE userPartyID=1"; //TODO: get userPartyID from group page session
+
+            $statement = $db->prepare($query);
+            $statement->execute();
+
+            $results = $statement->fetchAll();
+
+            $statement->closeCursor();
+
+            $i = 0;
+
+            foreach ($results as $result){
+                echo "<li style=\"background:$colors[$i];padding-left:0;\">" . $result['username'] . "</li><br/>";
+                $i++;      
+            }
+            ?>            
         </div>
 
         <div class="canvas .col-md-6">
-            <div style="text-align: center;"><strong>Player 1</strong> is drawing <strong>__ E __ O</strong></div> <!--TODO: use php to update player drawing and word with letter hints-->
+            <div style="text-align: center;"><strong>Player 1</strong> is drawing <strong>
+                <?php
+                global $db;
+
+                $query = "SELECT word FROM subcategory WHERE categoryName = 'animals' "; //TODO: get category from session, move function to drawing_page_sql.php
+
+                $statement = $db->prepare($query);
+                $statement->execute();
+    
+                $results = $statement->fetchAll();
+    
+                $statement->closeCursor();
+
+                $max = count($results);
+
+                $rng = rand(0,$max-1);
+
+                $_SESSION['word'] = $results[$rng]['word'];
+
+                echo $_SESSION['word'];
+                ?></div> <!--TODO: use php to update player drawing and word with letter hints-->
             
             <div class="chat">
-                 <ul id='list' style="top: 2px; position: absolute;">hi</ul>
-                 <input type="text" id="messages" style="bottom: 2px; position:absolute;" > 
+            <form method="POST" action="">
+                 <input type="text" name="messages" id="messages" style="bottom: 2px; position:absolute;">
+                 <input type="submit" value="Guess" name="guess" id="guess" class="btn btn-info">
+            </form>
                 </div>
             <canvas id="can" width="400" height="350"
                 style="position:relative; border:2px solid;left:30%;">
