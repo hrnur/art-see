@@ -46,7 +46,7 @@
                             <div class="row icon-field">
                                 <img class="edit-prof-pic" src="images/profile.jpeg" alt="Profile Photo">
                             </div>
-                            <div class="row name-field">
+                            <div class="row name-title">
                                 <h3 class="col name" id="name">Hello, <?php if (isset($user_info['name'])) echo $user_info['name']; else echo "Unknown" ?></h3>
                                 <p id="demo"></p>
                             </div>
