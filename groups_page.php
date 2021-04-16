@@ -25,72 +25,50 @@
     }
     include('navbar.php');
     include('groups_query.php');
+    $link = false;
     ?>
 
     <main>
 
-        <div class="container-fluid">
-            <div class="row card-deck" style="padding-top: 20px;">
-                <div class="col-md-6 d-flex align-items-stretch">
-                    <div class="card">
-                        <h4 class="card-title text-center"> Step One: Choose a Category!</h4>
-                        <div class="card-body">
-                            <div class="row">
-                                <!--
-                                TODO: Use Angular to sort and filter category model instances
-
-                                <div class="col-md-6 dropdown justify-content-center">
-                                    <button class="btn btn-outline-secondary dropdown-toggle" type="button"
-                                        id="sortDropdown" data-toggle="dropdown" aria-haspopup="true"
-                                        aria-expanded="false">
-                                        Sort by
-                                    </button>
-                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                        <a class="dropdown-item" href="#">Easy to Hard</a>
-                                        <a class="dropdown-item" href="#">Hard to Easy</a>
+        <div class="container-fluid h-100">
+            <div class="row" style="padding-top: 20px;">
+                <div class="col-md-8 col-xs-6 h-100">
+                    <div class="card h-100">
+                        <form method="post">
+                            <div class="card-body">
+                                <div class="col scrollable">
+                                    <h4 class="card-title text-center"> Step One: Choose a Category!</h4>
+                                    <div class="list-group">
+                                        <?php foreach ($categories as $category)  : ?>
+                                            <div class="form-check list-group-item">
+                                                <input class="form-check-input" type="radio" name="category" value="<?php echo $category['categoryName']?>" id="<?php echo $category['categoryName']?>">
+                                                <label class="form-check-label" for="radio1"><?php echo $category['categoryName']?></label>
+                                            </div>
+                                        <?php endforeach; ?>
                                     </div>
                                 </div>
-                                <div class="col-md-6 dropdown align-self-center">
-                                    <button class="btn btn-outline-secondary dropdown-toggle" type="button"
-                                        id="filterDropdown" data-toggle="dropdown" aria-haspopup="true"
-                                        aria-expanded="false">
-                                        Filter
-                                    </button>
-                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                        <a class="dropdown-item" href="#">Easy</a>
-                                        <a class="dropdown-item" href="#">Medium</a>
-                                        <a class="dropdown-item" href="#">Hard</a>
+                                <br/>
+                                <div class="col scrollable">
+                                    <h4 class="card-title text-center"> Step Two: Pick a Party!</h4>
+                                    <div class="list-group">
+                                        <?php foreach ($user_parties as $party)  : ?>
+                                            <div class="form-check list-group-item">
+                                                <input class="form-check-input" type="radio" name="party" value="<?php echo $party['partyID']?>" id="<?php echo $party['partyID']?>">
+                                                <label class="form-check-label" for="radio1"><?php echo $party['partyName']?></label>
+                                            </div>
+                                        <?php endforeach; ?>
                                     </div>
                                 </div>
-                            -->
+                                <div class="start">
+                                    <input type="submit" class="start-game btn btn-info btn-lg" value="Start Game!"/>
+                                </div>
                             </div>
-                            <hr>
-                            <form>
-                                <div class="list-group">
-                                <?php foreach ($categories as $category)  : ?>
-                                    <div class="form-check list-group-item">
-                                        <input class="form-check-input" type="radio" name="category" value="<?php echo $category['categoryName']?>" id="<?php echo $category['categoryName']?>">
-                                        <label class="form-check-label" for="radio1"><?php echo $category['categoryName']?>
-                                        </label>
-                                    </div>
-                                <?php endforeach; ?>
-                                </div>
-                            </form>
-                        </div>
+                        </form>
                     </div>
                 </div>
-                <div class="col-md-6 d-flex align-items-stretch">
-                    <div class="card">
-                        <h4 class="card-title text-center">Step Two: Pick a Party!</h4>
+                <div class="col-md-4 col-xs-6 h-100">
+                    <div class="card h-100">
                         <div class="card-body align-self-center">
-                            <select class="custom-select" id="select-party" aria-labelledby="dropdownMenuButton">
-                                <option selected>Select Party</option>
-                                <?php foreach ($user_parties as $party)  : ?>
-                                <option value="<?php echo $party['partyID'] ?>"><?php echo $party['partyName'] ?></option>
-                                <?php endforeach; ?>
-                            </select>
-                            <br>
-                            <hr>
                             <br>
                             <h5>Create a New Party</h5>
                             <form action="groups_page.php" method="get">
@@ -131,10 +109,21 @@
                     </div>
                 </div>
             </div>
-            <br>
-            <div class="start">
-                <a class="start-game btn btn-info btn-lg" href="drawing_page.php">Start Game!</a>
-            </div>
+
+
+            <?php 
+            if (isset($_POST['category']) && isset($_POST['party']))
+            {
+                $rewrite = "partyID=".$_POST['party']."&category=".$_POST['category'];
+                $link = true;
+            }
+            if ($link):
+            ?>
+            <script type="text/javascript">
+            document.location.href = 'drawing_page.php?<?php if(isset($rewrite)) echo $rewrite;?>';
+            </script>
+            <?php endif?>
+            
         </div>
     </main>
 

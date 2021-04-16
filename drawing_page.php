@@ -11,6 +11,12 @@ if (isset($_POST['guess'])){
     }
 }
 
+if (isset($_GET['partyID'])){
+}
+$category = "animals";
+if (isset($_GET['category'])){
+    $category = $_GET['category'];
+}
 ?>
 
 <html>
@@ -171,7 +177,7 @@ if (isset($_POST['guess'])){
 <body onload="init()">
     <header>
         <?php
-        include('navbar.html');
+        include('navbar.php');
         ?>
     </header>
 
@@ -180,7 +186,7 @@ if (isset($_POST['guess'])){
         <div class="party">
             <div class="info">
                 <h3 >Party Name</h3>
-                <p style="font-size: 12px;">Category: Animals <br/> <!---TODO: get category info from data in groups page-->
+                <p style="font-size: 12px;">Category: <?php echo $category?> <br/> <!---TODO: get category info from data in groups page-->
                     Round 1/3
                 </p>
             </div>
@@ -217,9 +223,10 @@ if (isset($_POST['guess'])){
                 <?php
                 global $db;
 
-                $query = "SELECT word FROM subcategory WHERE categoryName = 'animals' "; //TODO: get category from session, move function to drawing_page_sql.php
+                $query = "SELECT word FROM subcategory WHERE categoryName =:cat "; //TODO: get category from session, move function to drawing_page_sql.php
 
                 $statement = $db->prepare($query);
+                $statement->bindParam(':cat', $category, PDO::PARAM_STR);
                 $statement->execute();
     
                 $results = $statement->fetchAll();

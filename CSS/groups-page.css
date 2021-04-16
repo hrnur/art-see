@@ -39,6 +39,11 @@
     padding-top: 50px;
 }
 
+.scrollable {
+    max-height: 600px;
+    overflow-y: auto;
+}
+
 .footer {
     position: fixed;
     left: 0;

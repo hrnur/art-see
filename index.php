@@ -22,7 +22,6 @@ if (isset($_POST['login'])){
     $stmt->bindParam(2, $password, PDO::PARAM_STR);
     $stmt->execute();
     $info = $stmt->fetch();
-    $info = $stmt->fetchAll();
     $usern = $info['username'];
     echo $query;
   
