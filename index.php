@@ -1,40 +1,40 @@
 <?php
 require("connect-db.php");
-include("auth_sql.php");
+// include("auth_sql.php");
 session_start();
 
-if (isset($_POST['action'])){
-  if (!empty($_POST['action']) && ($_POST['action'] == 'Sign Up')){
-      $error = userSignUp($_POST['username'],$_POST['firstName'] . " " . $_POST['lastName'],$_POST['email'],$_POST['pwd']);
+// if (isset($_POST['action'])){
+//   if (!empty($_POST['action']) && ($_POST['action'] == 'Sign Up')){
+//       $error = userSignUp($_POST['username'],$_POST['firstName'] . " " . $_POST['lastName'],$_POST['email'],$_POST['pwd']);
 
-      echo $error;
-  }
-}
+//       echo $error;
+//   }
+// }
 
-if (isset($_POST['login'])){
-  $em = $_POST['em'];
-  $password = $_POST['password'];
+// if (isset($_POST['login'])){
+//   $em = $_POST['em'];
+//   $password = $_POST['password'];
 
-  if ($em != "" && $password != ""){
-    $query = "SELECT * FROM user WHERE email = ? AND pwd = ? LIMIT 1";
-    $stmt = $db->prepare($query);
-    $stmt->bindParam(1, $em, PDO::PARAM_STR);
-    $stmt->bindParam(2, $password, PDO::PARAM_STR);
-    $stmt->execute();
-    $info = $stmt->fetch();
-    $usern = $info['username'];
-    echo $query;
+//   if ($em != "" && $password != ""){
+//     $query = "SELECT * FROM user WHERE email = ? AND pwd = ? LIMIT 1";
+//     $stmt = $db->prepare($query);
+//     $stmt->bindParam(1, $em, PDO::PARAM_STR);
+//     $stmt->bindParam(2, $password, PDO::PARAM_STR);
+//     $stmt->execute();
+//     $info = $stmt->fetch();
+//     $usern = $info['username'];
+//     echo $query;
   
-  if ($info){
-    $_SESSION['uname'] = $usern;
-    header('Location: groups_page.php');
-  }
-}
-  else {
-    $error = "Invalid username or password"; //TODO: display error
-    echo $error;
-  }
-}
+//   if ($info){
+//     $_SESSION['uname'] = $usern;
+//     header('Location: groups_page.php');
+//   }
+// }
+//   else {
+//     $error = "Invalid username or password"; //TODO: display error
+//     echo $error;
+//   }
+// }
 ?>
 
 
@@ -60,59 +60,11 @@ if (isset($_POST['login'])){
 <body>
     <!--NAVBAR-->
     <div class="navbar">
-        <a class="brand" href="index.php">
+        <a class="brand" index.php">
             <img class="logo-pic" src="images/logo.png" alt="art, see!">
         </a>
         <!--TODO: Will use php to include a separate navbar and footer file -->
         <!--https://www.w3schools.com/howto/tryit.asp?filename=tryhow_css_modal-->
-        <button type="button" class="btn btn-info" id="myBtn" href="groups_page.php">Login</button>
-        <div id="myModal" class="modal">
-            <div class="modal-content">
-              <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                  <span aria-hidden="true">&times;</span>
-                </button>
-              </div>
-                <div class="container">
-                    <div class="row" style="width: 100%;">
-                      <div class="col">
-                        <form method="POST" action="">
-                            <h1>Login</h1>
-                            <br>
-                            <div class="form-group">
-                              <input type="email" name="em" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email" required>
-                            </div>
-                            <div class="form-group">
-                              <input type="password" name="password" class="form-control" id="exampleInputPassword1" placeholder="Password" required>
-                            </div>
-                            <input type="submit" value="Login" name="login" id="login" class="btn btn-info">
-                          </form>
-                      </div>
-                    </div>
-            </div>
-        </div>
-        <script>
-            // Get the modal
-            var modal = document.getElementById("myModal");
-            
-            // Get the button that opens the modal
-            var btn = document.getElementById("myBtn");
-            
-            // Get the <span> element that closes the modal
-            var span = document.getElementsByClassName("close")[0];
-            
-            // When the user clicks the button, open the modal 
-            btn.onclick = function() {
-              modal.style.display = "block";
-              document.getElementById("exampleInputEmail1").focus();
-            }
-            
-            
-            // When the user clicks on <span> (x), close the modal
-            span.onclick = function() {
-              modal.style.display = "none";
-            }
-            </script>
 
         <!-- <div class="profile-info">
         <img class="prof-pic" src="images/profile.jpeg" alt="Profile Photo"> 
@@ -125,44 +77,9 @@ if (isset($_POST['login'])){
       <h2 class="display-1"><strong class="welcome-text">Welcome to art, see!</strong></h2>
       <h4> <small class="text-muted">Let your friends see your art! Can YOU make them guess the correct answer?</small>
       </h4>
-      <p class="text-muted" style="font-size: 10pt; text-align: center;">Don't have an account?<a href="" data-toggle="modal" data-target="#signUpModal">
-        Sign Up
-      </a> here! </p>
     </div>
 
-    <div class="modal fade" id="signUpModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="false">
-      <div class="modal-dialog" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          <div class="modal-body">
-            <form method="POST" action="" >
-              <h1>Sign Up</h1>
-              <div class="form-group">
-                <input type="text" class="form-control" name="firstName" id="firstName" placeholder="First name" required>
-              </div>
-              <div class="form-group">
-                <input type="text" class="form-control" name="lastName" id="lastName" placeholder="Last name" required>
-              </div>
-              <div class="form-group">
-                <input type="text" class="form-control" name="username" id="username" placeholder="Username" required>
-              </div>
-              <div class="form-group">
-                <input name="email" type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email" required>
-              </div>
-              <div class="form-group">
-                <input name="pwd" type="password" class="form-control" id="exampleInputPassword1" placeholder="Password" required>
-              </div>
-              <button type="submit" class="btn btn-info" value="Sign Up" name="action" id="action">Submit</button>
-            </form>
-          </div>
-        </div>
-      </div>
-    </div>
-    
+  
 
     <!--BOOTSTRAP SETUP-->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"

@@ -15,15 +15,17 @@ $postdata = file_get_contents("php://input");
 // Extract json format to PHP array
 $request = json_decode($postdata);
 
+echo $postdata;
+
 $data = [];
-foreach ($request as $k => $v)
-{
-  $temp = "$k => $v";
-  $data[0]['post_'.$k] = $v;
-}
+// foreach ($request as $k => $v)
+// {
+//   $temp = "$k => $v";
+//   $data[0]['post_'.$k] = $v;
+// }
 // $temp will have the last key-value pair of the array
 
-$current_date = date("Y-m-d");
+// $current_date = date("Y-m-d");
 
 // Send response (in json format) back the front end
 echo json_encode(['content'=>$data, 'response_on'=>$current_date]);
