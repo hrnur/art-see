@@ -10,14 +10,58 @@
     </a>
     <!--TODO: Will use php to include a separate navbar and footer file -->
     <!--https://www.w3schools.com/howto/tryit.asp?filename=tryhow_css_modal-->
+  </div>
 
+    <div class="row">
+      <div class="col-sm-6">
+        <div class="card">
+          <div class="card-body">
+            <form action="" >
+              <h1>Sign Up</h1>
+              <div class="form-group">
+                <input type="text" class="form-control" name="firstName" id="firstName" placeholder="First name" required>
+              </div>
+              <div class="form-group">
+                <input type="text" class="form-control" name="lastName" id="lastName" placeholder="Last name" required>
+              </div>
+              <div class="form-group">
+                <input type="text" class="form-control" name="username" id="username" placeholder="Username" required>
+              </div>
+              <div class="form-group">
+                <input name="email" type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email" required>
+              </div>
+              <div class="form-group">
+                <input name="pwd" type="password" class="form-control" id="exampleInputPassword1" placeholder="Password" required>
+              </div>
+              <button type="submit" class="btn btn-info" value="Sign Up" name="action" id="action">Submit</button>
+            </form>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-6">
+        <div class="card">
+          <div class="card-body">
+            <form action="">
+              <h1>Login</h1>
+              <br>
+              <div class="form-group">
+                <input type="email" name="em" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email" required>
+              </div>
+              <div class="form-group">
+                <input type="password" name="password" class="form-control" id="exampleInputPassword1" placeholder="Password" required>
+              </div>
+              <input type="submit" value="Login" name="login" id="login" class="btn btn-info">
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
 
 <!-- <div class="profile-info">
 <img class="prof-pic" src="images/profile.jpeg" alt="Profile Photo"> 
 <a class="prof-link text-secondary" href="#">Username</a>
 </div> -->
 
-</div>
 
 
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
