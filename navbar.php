@@ -19,6 +19,8 @@
 <body>
     <!--NAVBAR-->
     <div class="navbar">
+    <a class="logout" href="logout.php" style="align-text:left">Logout</a>
+
         <a class="brand" href="groups_page.php">
             <img class="logo-pic" src="images/logo.png" alt="art, see!">
         </a>
